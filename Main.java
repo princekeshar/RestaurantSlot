@@ -45,7 +45,7 @@ class Main {
 
         orders[0] = new Order( 12, new String[]{"A", "A"}, 5.0);
         orders[1] = new Order( 21, new String[]{"A", "M"},1.0);
-        orders[2] = new Order( 14, new String[]{"M", "M", "M", "M", "A", "A"},1.0 );
+        orders[2] = new Order( 14, new String[]{"A", "A", "A", "M", "A", "A"},1.0 );
         orders[3] = new Order( 32, new String[]{"M"},0.1 );
         orders[4] = new Order( 22, new String[]{"A"},3.0 );
         return  orders;
@@ -85,6 +85,7 @@ class Main {
 
             ArrayList<Task>  tempList = new ArrayList<>();
             Double waitingTime = Double.MIN_VALUE;
+
             while (  (MAX_RESTAURANT_SLOT - queue.size()) < requiredSlots){
                 Integer orderId = queue.peek().orderId;
                 waitingTime = Math.max ( waitingTime,  queue.peek().time ) ;
@@ -93,10 +94,12 @@ class Main {
                 }
             }
 
+            startTime = tempList.size() ==0 ? startTime : waitingTime;
+
 
             Double deliveryTime  = order.distance * TIME_TO_TRAVEL_PERKM;
             int prepTime =  itemCount.noOfMainCourse > 0 ? MAIN_COURSE_PREP_TIME  : APPETIZER_PREP_TIME;
-            Double totalPrepTime = deliveryTime + prepTime + waitingTime + startTime;
+            Double totalPrepTime = deliveryTime + prepTime + startTime ;
             if(totalPrepTime > THRESHOLD_TIME){
                 System.out.println(String.format("Order %s is denied because the restaurant cannot accommodate it.", order.orderId));
                 for(Task task : tempList){
@@ -105,7 +108,6 @@ class Main {
                 continue;
             }
 
-            startTime = startTime + waitingTime;
 
             System.out.println(String.format( "Order %s will get delivered in %s minutes", order.orderId, decimalFormat.format(totalPrepTime) ));
             for( int k=0; k< requiredSlots ; k++){
@@ -114,7 +116,7 @@ class Main {
         }
 
     }
-
+    
     static  class  ItemCount{
 
         int noOfAppetizer = 0;
