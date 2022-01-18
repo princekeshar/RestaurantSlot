@@ -1,4 +1,9 @@
 
+#Coding Problem 
+I do understand, we should have getters and setters for each class and field should be private, but it just becuase of bit time limitation, I have put all classed in a single file. 
+
+I have used greedy approch to solve the problem. 
+
 #Tables
 <br>FK  - Foreign Key  </br>
 <br>PK - Primary Key  </br>
